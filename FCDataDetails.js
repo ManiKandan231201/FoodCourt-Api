@@ -19,7 +19,6 @@ mongoose.connect(mongoUrl+database).then(()=>{
 })
 
 foodcourt.get("/customerDetails",async(req,res)=>{
-    console.log(req.body);
     const userDatas= await mongoose.connection.collection("customerDetails").find().toArray().then((value)=>{
         res.send(value);
     });  
@@ -29,7 +28,38 @@ foodcourt.get("/hotelDetails",async(req,res)=>{
         res.send(value);
     });  
 })
-foodcourt.post("/loggedCustomerDetails",async(req,res)=>{
-    const userDatas= await mongoose.connection.collection("hotelDetails").find({phonenumber:req.body.phonenumber}); 
-    console.log(userDatas);
+foodcourt.post("/ForgotDetails",async(req,res)=>{
+    console.log(req.body);
+    await mongoose.connection.collection("customerDetails").updateOne({phonenumber:parseInt(req.body.forgotPhone)},{$set:{
+        password:req.body.forgotPass,
+        ConfirmPassword:req.body.forgotConfirm
+    }}).then(()=>{
+        console.log("data updated");
+    })
 })
+foodcourt.get("/Offers",async(req,res)=>{
+    const userDatas= await mongoose.connection.collection("Offers").find().toArray().then((value)=>{
+        res.send(value);
+    });  
+})
+foodcourt.get("/Visa",async(req,res)=>{
+    const userDatas= await mongoose.connection.collection("Visa").find().toArray().then((value)=>{
+        res.send(value);
+    });  
+})
+foodcourt.get("/Mastercard",async(req,res)=>{
+    const userDatas= await mongoose.connection.collection("Mastercard").find().toArray().then((value)=>{
+        res.send(value);
+    });  
+})
+foodcourt.get("/UPI",async(req,res)=>{
+    const userDatas= await mongoose.connection.collection("UPI").find().toArray().then((value)=>{
+        res.send(value);
+    });  
+})
+foodcourt.post("/loggedCustomerDetails",async(req,res)=>{
+    const userDatas= await mongoose.connection.collection("customerDetails").insertOne(req.body).then(()=>{
+        res.send("data inserted");
+    }); 
+})
+
